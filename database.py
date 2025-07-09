@@ -7,7 +7,6 @@ def criar_tabelas():
     conn = sqlite3.connect('meubanco.db')
     cursor = conn.cursor()
 
-    # ... (tabelas clientes, estoque, venda_itens - sem alterações) ...
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS clientes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,18 +24,16 @@ def criar_tabelas():
         quantidade INTEGER NOT NULL
     );
     """)
-    # Tabela de Vendas - COM NOVA COLUNA 'status'
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS vendas (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         cliente_id INTEGER NOT NULL,
         data TEXT NOT NULL,
         metodo_pagamento TEXT NOT NULL,
-        parcelas INTEGER,
+        numero_parcelas INTEGER,
         desconto REAL DEFAULT 0,
         valor_total REAL NOT NULL,
-        status_pagamento TEXT DEFAULT 'N/A', -- Conciliado, Pendente
-        status TEXT DEFAULT 'Ativa', -- NOVO CAMPO: 'Ativa' ou 'Estornada'
+        status TEXT DEFAULT 'Ativa', -- 'Ativa' ou 'Estornada'
         FOREIGN KEY (cliente_id) REFERENCES clientes (id)
     );
     """)
@@ -52,19 +49,28 @@ def criar_tabelas():
     );
     """)
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS transacoes_financeiras (
+    CREATE TABLE IF NOT EXISTS parcelas (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        tipo TEXT NOT NULL, 
-        natureza TEXT NOT NULL,
-        descricao TEXT NOT NULL,
-        valor REAL NOT NULL,
-        data TEXT NOT NULL,
-        venda_id INTEGER,
-        status TEXT DEFAULT 'Ativo',
+        venda_id INTEGER NOT NULL,
+        numero_parcela INTEGER NOT NULL,
+        valor_parcela REAL NOT NULL,
+        data_vencimento TEXT NOT NULL,
+        status TEXT DEFAULT 'Pendente', -- 'Pendente', 'Liquidada', 'Estornada'
+        transacao_id INTEGER,
         FOREIGN KEY (venda_id) REFERENCES vendas (id)
     );
     """)
-
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS transacoes_financeiras (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        tipo TEXT NOT NULL, -- 'Caixa' ou 'Banco'
+        natureza TEXT NOT NULL, -- 'Entrada' ou 'Saída'
+        descricao TEXT NOT NULL,
+        valor REAL NOT NULL,
+        data TEXT NOT NULL,
+        status TEXT DEFAULT 'Ativo' -- 'Ativo' ou 'Estornado'
+    );
+    """)
     print("Tabelas verificadas/criadas com sucesso!")
     conn.commit()
     conn.close()
