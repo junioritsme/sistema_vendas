@@ -69,7 +69,7 @@ Editar
 pip install tkcalendar reportlab python-dateutil
 ```
 
-###3. Crie o Banco de Dados
+### 3. Crie o Banco de Dados
 Antes de iniciar o aplicativo, você precisa criar o arquivo de banco de dados e as tabelas. Para isso, execute o script database.py:
 
 ```bash
@@ -83,7 +83,7 @@ Usuário: admin
 
 Senha: admin
 
-###4. Execute o Sistema
+### 4. Execute o Sistema
 Com tudo configurado, inicie o sistema executando o arquivo app.py:
 
 ```bash
