@@ -56,8 +56,8 @@ Siga os passos abaixo para configurar e rodar o projeto em sua máquina local.
 ### 1. Clone o Repositório
 
 ```bash
-git clone https://github.com/SEU-USUARIO/NOME-DO-SEU-REPOSITORIO.git
-cd NOME-DO-SEU-REPOSITORIO
+git clone https://github.com//junioritsme/sistema_vendas.git
+cd /sistema_vendas
 ````
 
 ### 2. Instale as Dependências
